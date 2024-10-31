@@ -7,6 +7,7 @@ import {
   Image,
   Text,
   TextInput,
+  Keyboard,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -53,35 +54,40 @@ export default function Register() {
     setPasswordError("");
     setConfirmPasswordError("");
 
-    // Validating inputs
+    let isValid = true;
+
     if (getEmailId === "") {
       setEmailError("Email is Required");
+      isValid = false;
     }
     if (getFirstName === "") {
-      setFirstName("First Name is Required");
+      setFirstnameError("First Name is Required");
+      isValid = false;
     }
     if (getLastName === "") {
-      setLastName("Last Name is Required");
+      setLastnameError("Last Name is Required");
+      isValid = false;
     }
     if (getTelephone === "") {
-      setTelephone("Telephone is Required");
+      setTelephoneError("Telephone is Required");
+      isValid = false;
     }
     if (getPassword === "") {
       setPasswordError("Password is Required");
+      isValid = false;
     }
     if (getConfirmPassword === "") {
       setConfirmPasswordError("Confirm Password is Required");
+      isValid = false;
     }
-    if (getPassword !== getConfirmPassword) {
-      setConfirmPasswordError("Passwords do not match");
+
+    if (!isValid) {
+      setDisabled(false);
     }
   };
 
   const toggleShowPassword = (): void => {
     setShowPassword(!showPassword);
-  };
-
-  const toggleShowConfirmPassword = (): void => {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
@@ -105,7 +111,14 @@ export default function Register() {
           style={styles.input}
           placeholderTextColor="#fff"
           value={getFirstName}
-          onChangeText={setFirstName}
+          onChangeText={(value: string) => {
+            setFirstName(value);
+            if (value === "") {
+              setFirstnameError("First Name is Required");
+            } else {
+              setFirstnameError("");
+            }
+          }}
           onFocus={() => setFirstnameFocused(true)}
           onBlur={() => setFirstnameFocused(false)}
         />
@@ -123,7 +136,14 @@ export default function Register() {
           style={styles.input}
           placeholderTextColor="#fff"
           value={getLastName}
-          onChangeText={setLastName}
+          onChangeText={(value: string) => {
+            setLastName(value);
+            if (value === "") {
+              setLastnameError("Last Name is Required");
+            } else {
+              setLastnameError("");
+            }
+          }}
           onFocus={() => setLastnameFocused(true)}
           onBlur={() => setLastnameFocused(false)}
         />
@@ -142,7 +162,14 @@ export default function Register() {
           keyboardType="phone-pad"
           placeholderTextColor="#fff"
           value={getTelephone}
-          onChangeText={setTelephone}
+          onChangeText={(value: string) => {
+            setTelephone(value);
+            if (value === "") {
+              setTelephoneError("Telephone is Required");
+            } else {
+              setTelephoneError("");
+            }
+          }}
           onFocus={() => setTelephoneFocused(true)}
           onBlur={() => setTelephoneFocused(false)}
         />
@@ -163,8 +190,11 @@ export default function Register() {
           value={getEmailId}
           onChangeText={(value: string) => {
             setEmailId(value);
-            setError(false);
-            setEmailError("");
+            if (value === "") {
+              setEmailError("Email is Required");
+            } else {
+              setEmailError("");
+            }
           }}
           onFocus={() => setEmailFocused(true)}
           onBlur={() => setEmailFocused(false)}
@@ -186,8 +216,11 @@ export default function Register() {
           value={getPassword}
           onChangeText={(value: string) => {
             setPassword(value);
-            setError(false);
-            setPasswordError("");
+            if (value === "") {
+              setPasswordError("Password is Required");
+            } else {
+              setPasswordError("");
+            }
           }}
           onFocus={() => setPasswordFocused(true)}
           onBlur={() => setPasswordFocused(false)}
@@ -216,26 +249,16 @@ export default function Register() {
           value={getConfirmPassword}
           onChangeText={(value: string) => {
             setConfirmPassword(value);
-            setError(false);
-            setConfirmPasswordError("");
+            if (value === "") {
+              setConfirmPasswordError("Confirm Password is Required");
+            } else {
+              setConfirmPasswordError("");
+            }
           }}
           onFocus={() => setConfirmPasswordFocused(true)}
           onBlur={() => setConfirmPasswordFocused(false)}
         />
-        <TouchableOpacity
-          onPress={toggleShowConfirmPassword}
-          style={styles.eyeIcon}
-        >
-          <MaterialCommunityIcons
-            name={showConfirmPassword ? "eye-off" : "eye"}
-            size={22}
-            color="#fff"
-          />
-        </TouchableOpacity>
       </View>
-      {confirmPasswordError ? (
-        <Text style={styles.errorText}>{confirmPasswordError}</Text>
-      ) : null}
 
       <TouchableOpacity
         style={styles.registerBtn}

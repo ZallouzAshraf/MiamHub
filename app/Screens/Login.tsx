@@ -29,11 +29,19 @@ export default function Login() {
   const loginFunction = (): void => {
     setDisabled(true);
     setLoading(true);
+
+    setEmailError("");
+    setPasswordError("");
+
+    let isValid = true;
+
     if (getEmailId === "") {
       setEmailError("Email is Required");
+      isValid = false;
     }
     if (getPassword === "") {
       setPasswordError("Password is Required");
+      isValid = false;
     }
   };
 
@@ -50,7 +58,11 @@ export default function Login() {
       />
 
       <View
-        style={[styles.inputContainer, isEmailFocused && styles.inputFocused]}
+        style={[
+          styles.inputContainer,
+          isEmailFocused && styles.inputFocused,
+          emailError ? { borderColor: "#de3138" } : {},
+        ]}
       >
         <TextInput
           placeholder="Email"
@@ -60,19 +72,22 @@ export default function Login() {
           value={getEmailId}
           onChangeText={(value: string) => {
             setEmailId(value);
-            setError(false);
-            setEmailError("");
+            if (value === "") {
+              setEmailError("Telephone is Required");
+            } else {
+              setEmailError("");
+            }
           }}
           onFocus={() => setEmailFocused(true)}
           onBlur={() => setEmailFocused(false)}
         />
       </View>
-      {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
 
       <View
         style={[
           styles.inputContainer,
           isPasswordFocused && styles.inputFocused,
+          passwordError ? { borderColor: "#de3138" } : {},
         ]}
       >
         <TextInput
@@ -83,8 +98,11 @@ export default function Login() {
           value={getPassword}
           onChangeText={(value: string) => {
             setPassword(value);
-            setError(false);
-            setPasswordError("");
+            if (value === "") {
+              setPasswordError("Telephone is Required");
+            } else {
+              setPasswordError("");
+            }
           }}
           onFocus={() => setPasswordFocused(true)}
           onBlur={() => setPasswordFocused(false)}
@@ -97,9 +115,6 @@ export default function Login() {
           />
         </TouchableOpacity>
       </View>
-      {passwordError ? (
-        <Text style={styles.errorText}>{passwordError}</Text>
-      ) : null}
 
       <TouchableOpacity style={styles.forgotBtn}>
         <Text style={styles.forgotBtnText}>Forgot Password ?</Text>

@@ -1,18 +1,23 @@
 // HomeScreen.tsx
 import React from "react";
-import SplashScreenComponent from "@/components/Screens/SplashScreenComponent";
-import Login from "@/components/Screens/Login";
+import SplashScreenComponent from "@/app/Screens/SplashScreenComponent";
+import Login from "@/app/Screens/Login";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Register from "@/components/Screens/Register";
+import Register from "@/app/Screens/Register";
+import Accueil from "../Screens/Accueil";
+import { StatusBar } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
 export default function HomeScreen() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Splash" component={SplashScreenComponent} />
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="Register" component={Register} />
-    </Stack.Navigator>
+    <>
+      <StatusBar barStyle="dark-content" />
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Splash" component={SplashScreenComponent} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Register} />
+      </Stack.Navigator>
+    </>
   );
 }
