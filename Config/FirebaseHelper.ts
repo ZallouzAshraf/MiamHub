@@ -37,7 +37,6 @@ export const getFirebaseApp = (): FirebaseApp => {
   const app: FirebaseApp =
     getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
-  // Set up persistence with AsyncStorage
   const persistence: Persistence = getReactNativePersistence(AsyncStorage);
 
   initializeAuth(app, {
