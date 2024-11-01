@@ -1,15 +1,12 @@
 import React from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  ScrollView,
-  TouchableOpacity,
-  StyleSheet,
-  ImageSourcePropType,
-  Image,
-} from "react-native";
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { View, Text, ScrollView, ImageSourcePropType } from "react-native";
+import Header from "@/components/MyComponents/Header";
+import { SearchBar } from "react-native-screens";
+import Banner from "@/components/MyComponents/Banner";
+import CategoryCarousel from "@/components/MyComponents/CategoryCarousel";
+import styles from "@/components/MyComponents/Style/styles";
+import RecommendedList from "@/components/MyComponents/RecommendedList";
+import NosRestaurant from "@/components/MyComponents/NosRestaurant";
 
 const images: { [key: string]: ImageSourcePropType } = {
   pâtes: require("../../assets/images/Foods/pate.jpg"),
@@ -53,158 +50,25 @@ export default function Accueil() {
   ];
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Order Your Favorite Food!</Text>
-        <Ionicons name="notifications-outline" size={30} color="#fcb823" />
-      </View>
-
-      <View style={styles.searchContainer}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search food, drink, desserts"
-          placeholderTextColor="#aaa"
-        />
-        <TouchableOpacity style={styles.searchButton}>
-          <Ionicons name="search" size={20} color="white" />
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.banner}>
-        <View style={styles.bannerContent}>
-          <Text style={styles.bannerText}>
-            Grab Our Exclusive Food Discounts Now!
-          </Text>
-          <TouchableOpacity style={styles.bannerButton}>
-            <Text style={styles.bannerButtonText}>Order Now</Text>
-          </TouchableOpacity>
-        </View>
-        <Image
-          source={require("../../assets/images/burgerAccueilbg.png")}
-          style={styles.bannerImage}
-        />
-      </View>
-
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.categoryCarousel}
-      >
-        {categories.map((item, index) => (
-          <TouchableOpacity key={index} style={styles.categoryItem}>
-            <Image
-              source={images[item.toLowerCase()]}
-              style={styles.categoryImage}
-            />
-            <Text style={styles.categoryText}>{item}</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-
+      <Header />
+      <SearchBar />
+      <Banner />
+      <CategoryCarousel categories={categories} images={images} />
       <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>Recommended For You</Text>
-        <TouchableOpacity>
-          <Text style={styles.seeAll}>See All</Text>
-        </TouchableOpacity>
+        <Text style={styles.sectionTitle}>Recommended for You</Text>
+        <Text style={styles.seeAll}>See All</Text>
       </View>
-      <View style={styles.recommendedList}>
-        {recommendedcategories.map((item, index) => (
-          <View key={index} style={styles.recommendedItem}>
-            <Image
-              source={imagesrecommended[item.img.toLowerCase()]}
-              style={styles.foodImage}
-            />
-            <View style={styles.foodDetails}>
-              <Text style={styles.foodName}>{item.name}</Text>
-              <Text style={styles.foodPrice}>{item.price}</Text>
-              <View style={styles.rating}>
-                <FontAwesome name="star" size={16} color="#fcb823" />
-                <Text style={styles.ratingText}>{item.rating}</Text>
-              </View>
-            </View>
-          </View>
-        ))}
+
+      <RecommendedList
+        recommendedcategories={recommendedcategories}
+        imagesrecommended={imagesrecommended}
+      />
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}>Our Restaurants</Text>
+        <Text style={styles.seeAll}>See All</Text>
       </View>
+
+      <NosRestaurant />
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff", paddingHorizontal: 16 },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 50,
-  },
-  title: { fontSize: 28, fontWeight: "bold", width: 260 },
-  searchContainer: { flexDirection: "row", marginTop: 16 },
-  searchInput: {
-    flex: 1,
-    backgroundColor: "#eee",
-    padding: 10,
-    borderRadius: 8,
-  },
-  searchButton: {
-    backgroundColor: "#fcb823",
-    padding: 10,
-    borderRadius: 8,
-    marginLeft: 8,
-  },
-  banner: {
-    flexDirection: "row",
-    backgroundColor: "#fcb823",
-    borderRadius: 8,
-    marginTop: 20,
-    padding: 16,
-  },
-  bannerContent: { flex: 1, justifyContent: "center" },
-  bannerText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 22,
-    margin: 2,
-    letterSpacing: 0,
-  },
-  bannerButton: {
-    backgroundColor: "#000",
-    padding: 11,
-    width: 130,
-    textAlign: "center",
-    borderRadius: 20,
-    marginTop: 10,
-  },
-  bannerButtonText: {
-    color: "#fff",
-    fontSize: 15,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  bannerImage: { width: 120, height: 150, borderRadius: 40 },
-  categoryCarousel: { flexDirection: "row", marginTop: 20 },
-  categoryItem: { alignItems: "center", marginRight: 16 },
-  categoryImage: { width: 65, height: 65, borderRadius: 26 },
-  categoryText: { marginTop: 8, fontSize: 12, fontWeight: "500" },
-  sectionHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 20,
-  },
-  sectionTitle: { fontSize: 18, fontWeight: "bold" },
-  seeAll: { color: "#f57c00" },
-  recommendedList: { marginTop: 10 },
-  recommendedItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 16,
-    backgroundColor: "#f9f9f9",
-    borderRadius: 8,
-    padding: 10,
-  },
-  foodImage: { width: 60, height: 60, borderRadius: 30 },
-  foodDetails: { marginLeft: 16, flex: 1 },
-  foodName: { fontWeight: "bold", fontSize: 16 },
-  foodPrice: { marginTop: 4, color: "#555" },
-  rating: { flexDirection: "row", alignItems: "center", marginTop: 4 },
-  ratingText: { marginLeft: 4, color: "#fcb823" },
-});

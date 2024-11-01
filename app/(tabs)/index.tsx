@@ -14,6 +14,7 @@ export default function HomeScreen() {
     <>
       <StatusBar barStyle="dark-content" />
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Accueil" component={Accueil} />
         <Stack.Screen name="Splash" component={SplashScreenComponent} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
