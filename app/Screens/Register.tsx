@@ -12,6 +12,8 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getFirebaseApp } from "../../Config/FirebaseHelper";
 
 export default function Register() {
   const [getFirstName, setFirstName] = useState<string>("");
@@ -42,7 +44,7 @@ export default function Register() {
 
   const navigation = useNavigation<NavigationProp<any>>();
 
-  const registerFunction = (): void => {
+  const registerFunction = async (): Promise<void> => {
     setDisabled(true);
     setLoading(true);
 
@@ -82,6 +84,28 @@ export default function Register() {
     }
 
     if (!isValid) {
+      setDisabled(false);
+    }
+    const app = getFirebaseApp();
+    const auth = getAuth(app);
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        getEmailId,
+        getPassword
+      );
+      console.log("User registered ");
+
+      navigation.navigate("Accueil");
+    } catch (error) {
+      console.error("Registration error:", error);
+      setError(true);
+      setDisabled(false);
+      setLoading(false);
+      setEmailError("An error occurred during registration");
+    } finally {
+      setLoading(false);
       setDisabled(false);
     }
   };
